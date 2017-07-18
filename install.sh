@@ -20,15 +20,26 @@ if [ ! -e $2 ]; then
 fi
 
 
-# change directory to script dir
-#SCP_DIR=$(cd $(dirname $0);pwd);
-#cd $SCP_DIR/../
-
+SCP_DIR=$(cd $(dirname $0);pwd);
 cp $SCP_DIR/cmd.tmpl /usr/bin/$1
-chmod 755 /usr/bin/$1
+if [ $? -ne 0 ]; then
+    echo "ERROR : failed copy cmd.tmpl"
+    exit 1
+fi
 
-SED_PRM="s/@current/${$2//\//\\/}\/..\//g"
+chmod 755 /usr/bin/$1
+if [ $? -ne 0 ]; then
+    echo "ERROR : failed change mode"
+    exit 1
+fi
+
+TGT=$2
+SED_PRM="s/@target/${TGT//\//\\/}\/..\//g"
 echo sed -i $SED_PRM /usr/bin/$1
 sed -i $SED_PRM /usr/bin/$1
+if [ $? -ne 0 ]; then
+    echo "ERROR : failed sed command"
+    exit 1
+fi
 
 echo create $1 command
