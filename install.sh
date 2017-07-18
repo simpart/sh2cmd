@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then
 fi
 
 TGT=$2
-SED_PRM="s/@target/${TGT//\//\\/}\/..\//g"
+SED_PRM="s/@target/${TGT//\//\\/}/g"
 echo sed -i $SED_PRM /usr/bin/$1
 sed -i $SED_PRM /usr/bin/$1
 if [ $? -ne 0 ]; then
